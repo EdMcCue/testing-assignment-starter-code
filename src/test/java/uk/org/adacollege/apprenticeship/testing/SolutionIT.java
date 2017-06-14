@@ -160,7 +160,11 @@ public class SolutionIT {
     @Test
     public void notLoggedIn_checkMenus() {
         assertElementPresent(logInMenuId);
+        assertElementPresent(aboutMenuId);
         assertElementNotPresent(logOutMenuId);
+        assertElementNotPresent(myWhipbirdsMenuId);
+
+
         // TODO: complete for all other menus
     }
 
@@ -168,7 +172,12 @@ public class SolutionIT {
     @Test
     public void notLoggedIn_checkCurrentPage() {
         // TODO
+       assertTitleEquals("whipbird: log in");
+        assertUrlEquals("http://whipbird.mattcalthrop.com/#!/login");
+        assertElementTextEquals(By.tagName("h4"), "Log in");
+        assertElementTextEquals(By.id("footer-right"), "");
     }
+/*
 
     // Step 3
     @Test
@@ -214,4 +223,6 @@ public class SolutionIT {
     public void loggedIn_addNewWhipbirdThenDeleteIt() {
         // TODO
     }
+    */
 }
+
