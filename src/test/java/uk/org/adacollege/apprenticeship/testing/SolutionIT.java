@@ -229,19 +229,37 @@ public class SolutionIT {
         //Other menus should not be visible
         assertElementNotPresent(logInMenuId);
     }
-/*
+
     // Step 6
     @Test
     public void loggedIn_checkCurrentPage() {
         // TODO
+        logIn(true);
+        //URL should be set correctly.
+        assertUrlEquals("http://whipbird.mattcalthrop.com/#!/my-whipbirds");
+        //Page title should be set correctly.
+        assertTitleEquals("whipbird: my whipbirds");
+        //Page heading should be set correctly.
+        assertElementTextEquals(By.tagName("h4"), "Current whipbirds for Ed McCue");
+        //Page footer (right) should contain user’s full name.
+        assertElementTextEquals(By.id("footer-right"), "Ed McCue");
     }
 
     // Step 7
     @Test
     public void loggedIn_clickLogOutMenu() {
         // TODO
+        logIn(true);
+        driver.findElement(By.id(logOutMenuId)).click();
+        //URL should be set correctly.
+        assertUrlEquals("http://whipbird.mattcalthrop.com/#!/logout");
+        //Page title should be set correctly.
+        assertTitleEquals("whipbird: log out");
+        //Page heading should be set correctly.
+        assertElementTextEquals(By.tagName("h4"), "Log out");
     }
 
+/*
     // Step 8
     @Test
     public void loggedIn_addNewWhipbird() {
