@@ -29,6 +29,13 @@ public class SolutionIT {
     private static String logInButtonId = "login-button";
     private static String logOutButtonId = "log-out-button";
     private static String popupMessageId = "popup-message";
+    private static String deletewhipbirdbutton = "delete-whipbird-button-0";
+    private static int size;
+    private static String enterbirdname = "name";
+    private static String enterbirdage = "age";
+    private static String newbird = "Karl";
+    private static String newage = "199";
+    private static String AddBirdButton = "add-new-whipbird-button";
 
     // ========= UTILITY METHODS =========
 
@@ -42,6 +49,36 @@ public class SolutionIT {
                 return driver.findElement(locator);
             }
         };
+    }
+
+    private static void CountBirds(){
+        size = driver.findElements(By.id("delete-whipbird-button-0")).size();
+    }
+
+    private static void DeleteBirds(){
+        CountBirds();
+        while (size > 0){
+            DeleteFirstBird();
+        CountBirds();
+        }
+
+    }
+
+    private static void MakeBird(){
+        wait.until(presenceOfElementLocated(By.id(enterbirdname)));
+        driver.findElement(By.id(enterbirdname)).sendKeys(newbird);
+
+        wait.until(presenceOfElementLocated(By.id(enterbirdage)));
+        driver.findElement(By.id(enterbirdage)).sendKeys(newage);
+
+        wait.until(presenceOfElementLocated(By.id(AddBirdButton)));
+        driver.findElement(By.id(AddBirdButton)).click();
+
+    }
+
+    private static void DeleteFirstBird() {
+        wait.until(presenceOfElementLocated(By.id(deletewhipbirdbutton)));
+        driver.findElement(By.id(deletewhipbirdbutton)).click();
     }
 
     private static void logIn(Boolean withValidCredentials) {
@@ -259,13 +296,24 @@ public class SolutionIT {
         assertElementTextEquals(By.tagName("h4"), "Log out");
     }
 
-/*
+
     // Step 8
     @Test
     public void loggedIn_addNewWhipbird() {
-        // TODO
+        logIn(true);
+        driver.findElement(By.id(myWhipbirdsMenuId)).click();
+        DeleteBirds();
+        MakeBird();
+        assertElementTextEquals(By.id("whipbird-name-0"), newbird);
+        assertElementTextEquals(By.id("whipbird-age-0"), newage);
+        wait.until(presenceOfElementLocated(By.id(popupMessageId)));
+        assertElementTextEquals(By.id("popup-message"), "Whipbird added: Karl");
+        //Specific feedback message should be displayed.
+        //The name of the whipbird just created should exist on the page.
+
     }
 
+    /*
     // Step 9
     @Test
     public void loggedIn_addNewWhipbirdThenDeleteIt() {
