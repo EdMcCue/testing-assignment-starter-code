@@ -30,12 +30,12 @@ public class SolutionIT {
     private static String logOutButtonId = "log-out-button";
     private static String popupMessageId = "popup-message";
     private static String deletewhipbirdbutton = "delete-whipbird-button-0";
-    private static int size;
     private static String enterbirdname = "name";
     private static String enterbirdage = "age";
     private static String newbird = "Karl";
     private static String newage = "199";
     private static String AddBirdButton = "add-new-whipbird-button";
+    private static String BirdLocation = "whipbird-name-0";
 
     // ========= UTILITY METHODS =========
 
@@ -51,20 +51,20 @@ public class SolutionIT {
         };
     }
 
-    private static void CountBirds(){
-        size = driver.findElements(By.id("delete-whipbird-button-0")).size();
+    private static int CountBirds() {
+        return driver.findElements(By.id("delete-whipbird-button-0")).size();
     }
 
-    private static void DeleteBirds(){
-        CountBirds();
-        while (size > 0){
+    private static void DeleteBirds() {
+        int size = CountBirds();
+        while (size > 0) {
             DeleteFirstBird();
-        CountBirds();
+            size = CountBirds();
         }
 
     }
 
-    private static void MakeBird(){
+    private static void MakeBird() {
         wait.until(presenceOfElementLocated(By.id(enterbirdname)));
         driver.findElement(By.id(enterbirdname)).sendKeys(newbird);
 
@@ -137,9 +137,6 @@ public class SolutionIT {
     }
 
     private static void assertUrlEquals(final String expectedUrl) {
-        // TODO: implement this method
-        // - use assertTitleEquals() as an example pattern to follow
-        // - search the web for how to find the current URL with Selenium
         Boolean result = wait.until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
                 return driver.getCurrentUrl().equals(expectedUrl);
@@ -149,12 +146,6 @@ public class SolutionIT {
     }
 
     private static void assertElementTextEquals(By selector, final String expectedText) {
-        // TODO: implement this method
-        // - use assertTitleEquals() as an example pattern to follow
-        // - but instead of return driver.getTitle().equals(expectedTitle)
-        //   call driver.findElement() with the selector provided
-        //   and then get the text from that element
-        //   and then check that it equals the expected text
 
         Boolean result = wait.until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
@@ -164,13 +155,14 @@ public class SolutionIT {
         assertTrue(result);
     }
 
+
     // ========= SCAFFOLDING =========
 
     @BeforeClass
     public static void beforeAll() {
         startUrl = "http://whipbird.mattcalthrop.com/";
         driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, 5);
+        wait = new WebDriverWait(driver, 10);
     }
 
     @AfterClass
@@ -270,7 +262,6 @@ public class SolutionIT {
     // Step 6
     @Test
     public void loggedIn_checkCurrentPage() {
-        // TODO
         logIn(true);
         //URL should be set correctly.
         assertUrlEquals("http://whipbird.mattcalthrop.com/#!/my-whipbirds");
@@ -285,8 +276,8 @@ public class SolutionIT {
     // Step 7
     @Test
     public void loggedIn_clickLogOutMenu() {
-        // TODO
         logIn(true);
+        wait.until(presenceOfElementLocated(By.id(logOutMenuId)));
         driver.findElement(By.id(logOutMenuId)).click();
         //URL should be set correctly.
         assertUrlEquals("http://whipbird.mattcalthrop.com/#!/logout");
@@ -301,6 +292,7 @@ public class SolutionIT {
     @Test
     public void loggedIn_addNewWhipbird() {
         logIn(true);
+        wait.until(presenceOfElementLocated(By.id(myWhipbirdsMenuId)));
         driver.findElement(By.id(myWhipbirdsMenuId)).click();
         DeleteBirds();
         MakeBird();
@@ -308,17 +300,24 @@ public class SolutionIT {
         assertElementTextEquals(By.id("whipbird-age-0"), newage);
         wait.until(presenceOfElementLocated(By.id(popupMessageId)));
         assertElementTextEquals(By.id("popup-message"), "Whipbird added: Karl");
-        //Specific feedback message should be displayed.
-        //The name of the whipbird just created should exist on the page.
-
     }
 
-    /*
+
     // Step 9
     @Test
     public void loggedIn_addNewWhipbirdThenDeleteIt() {
-        // TODO
-    }
-    */
-}
+        logIn(true);
+        wait.until(presenceOfElementLocated(By.id(myWhipbirdsMenuId)));
+        driver.findElement(By.id(myWhipbirdsMenuId)).click();
+        DeleteBirds();
+        MakeBird();
+        DeleteBirds();
+        DeleteFirstBird();
+        //Specific feedback message should be displayed after new whipbird has been deleted.
+        wait.until(presenceOfElementLocated(By.id(popupMessageId)));
+        assertElementTextEquals(By.id("popup-message"), "Whipbird deleted: Karl");
+        //The name of the whipbird created should NOT exist on the page.
+        assertElementNotPresent(BirdLocation);
 
+    }
+}
