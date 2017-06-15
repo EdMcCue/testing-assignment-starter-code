@@ -221,9 +221,13 @@ public class SolutionIT {
     @Test
     public void loggedIn_checkMenus() {
         logIn(true);
-        //All required menus should be visible.
-        //Other menus should not be visible
 
+        //All required menus should be visible.
+        assertElementPresent(logOutMenuId);
+        assertElementPresent(aboutMenuId);
+        assertElementPresent(myWhipbirdsMenuId);
+        //Other menus should not be visible
+        assertElementNotPresent(logInMenuId);
     }
 /*
     // Step 6
