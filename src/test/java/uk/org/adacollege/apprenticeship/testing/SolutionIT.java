@@ -159,8 +159,10 @@ public class SolutionIT {
     // Step 1
     @Test
     public void notLoggedIn_checkMenus() {
+        //All required menus should be visible.
         assertElementPresent(logInMenuId);
         assertElementPresent(aboutMenuId);
+        //Other menus should not be visible
         assertElementNotPresent(logOutMenuId);
         assertElementNotPresent(myWhipbirdsMenuId);
     }
@@ -168,9 +170,13 @@ public class SolutionIT {
     // Step 2
     @Test
     public void notLoggedIn_checkCurrentPage() {
-       assertTitleEquals("whipbird: log in");
+        //Page title should be set correctly
+        assertTitleEquals("whipbird: log in");
+        //URL should be set correctly
         assertUrlEquals("http://whipbird.mattcalthrop.com/#!/login");
+        //Page heading (text at top left of page, below navigation bar) should be set correctly.
         assertElementTextEquals(By.tagName("h4"), "Log in");
+        //Page footer (right) should be empty
         assertElementTextEquals(By.id("footer-right"), "");
     }
 
@@ -178,27 +184,35 @@ public class SolutionIT {
     // Step 3
     @Test
     public void notLoggedIn_clickAboutMenu() {
+        wait.until(presenceOfElementLocated(By.id(aboutMenuId)));
         driver.findElement(By.id(aboutMenuId)).click();
+        //URL should be set correctly.
         assertUrlEquals("http://whipbird.mattcalthrop.com/#!/about");
+        //Page title should be set correctly
         assertTitleEquals("whipbird: about");
+        //Page heading should be set correctly.
         assertElementTextEquals(By.tagName("h4"), "About this app");
-        // TODO
     }
- /*
+
     // Step 4
     @Test
     public void notLoggedIn_logInWithIncorrectCredentials() {
-        // TODO
-
-*//*
-        All required menus should be visible.
-Other menus should not be visible.
-URL should be set correctly.
-Page title should be set correctly.
-Specific error message should be displayed.
-Page footer (right) should be empty.
-*//*
-
+        logIn(false);
+        // All required menus should be visible.
+        assertElementPresent(logInMenuId);
+        assertElementPresent(aboutMenuId);
+        //Other menus should not be visible.
+        assertElementNotPresent(logOutMenuId);
+        assertElementNotPresent(myWhipbirdsMenuId);
+        //URL should be set correctly.
+        assertUrlEquals("http://whipbird.mattcalthrop.com/#!/login");
+        //Page title should be set correctly.
+        assertTitleEquals("whipbird: log in");
+        //Specific error message should be displayed.
+        wait.until(presenceOfElementLocated(By.id(popupMessageId)));
+        assertElementTextEquals(By.id("popup-message"), "Username or password incorrect");
+        //Page footer (right) should be empty.
+        assertElementTextEquals(By.id("footer-right"), "");
     }
 
     // --------- WHEN LOGGED IN ---------
@@ -207,9 +221,11 @@ Page footer (right) should be empty.
     @Test
     public void loggedIn_checkMenus() {
         logIn(true);
-        // TODO
-    }
+        //All required menus should be visible.
+        //Other menus should not be visible
 
+    }
+/*
     // Step 6
     @Test
     public void loggedIn_checkCurrentPage() {
